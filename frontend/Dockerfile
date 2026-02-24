@@ -11,10 +11,6 @@ COPY . .
 
 RUN npm run build
 
-# EXPOSE 4200
-
-# CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--disable-host-check"]
-
 FROM nginx:alpine
 
 COPY --from=build /app/dist/* /usr/share/nginx/html
