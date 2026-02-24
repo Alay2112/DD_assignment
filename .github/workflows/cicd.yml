@@ -1,1 +1,73 @@
+name: CI-CD Pipeline
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+      - main
+
+jobs:
+  build:
+     name: BACKEND-FRONTEND Build
+     runs-on: ubuntu-latest
+
+     steps:
+       - name: checking codes
+         uses: actions/checkout@v4
+
+       - name: node backend
+         uses: actions/setup-node@v4
+         with:
+           node-version: "20"
+
+       - name: Installing backend dependencies
+         working-directory: backend
+         run: npm install
+
+       - name: Angular frontend
+         uses: actions/setup-node@v4
+         with:
+           node-version: "20"
+
+       - name: Installing frontend dependancies
+         working-directory: frontend
+         run: npm install
+
+       - name: Build frontend
+         working-directory: frontend
+         run: npm run build
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build & Push Backend
+      run: |
+        docker build -t DOCKER_USERNAME/backend ./backend
+        docker push DOCKER_USERNAME/backend
+
+    - name: Build & Push Frontend
+      run: |
+        docker build -t DOCKER_USERNAME/frontend ./frontend
+        docker push DOCKER_USERNAME/frontend
+
+    - name: Deploy to AWS EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_KEY }}
+        script: |
+          cd MY_PROJECT
+          docker compose pull
+          docker compose up -d

@@ -11,28 +11,28 @@ services:
     volumes:
     - mongo_data:/data/db
     restart: unless-stopped
- 
+
   backend:
-    image: backend
-    build: ./backend
+    image: alaypatel212/backend
+    # build: ./backend
     env_file:
     - ./backend/.env
     ports:
-    - "5050:5050"
+    - "8081:8081"
     depends_on:
       mongo:
         condition: service_healthy
     restart: unless-stopped
 
   frontend:
-    image: frontend
-    build: ./frontend
+    image: alaypatel212/frontend
+    # build: ./frontend
     ports:
     - "4200:4200"
     depends_on:
     - backend
     restart: unless-stopped
-  
+
   nginx:
     image: nginx:alpine
     ports:
@@ -43,6 +43,6 @@ services:
     - frontend
     - backend
     restart: unless-stopped
-  
+
 volumes:
   mongo_data:
