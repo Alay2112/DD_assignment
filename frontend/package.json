@@ -4,7 +4,7 @@
   "scripts": {
     "lint": "eslint src --ext .ts,.js",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0 --port 4200",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
