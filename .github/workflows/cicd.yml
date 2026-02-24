@@ -70,6 +70,6 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         script: |
-          cd MY_PROJECT
+          cd DD_assignment
           docker compose pull
           docker compose up -d
