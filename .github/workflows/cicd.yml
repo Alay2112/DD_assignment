@@ -54,13 +54,13 @@ jobs:
 
     - name: Build & Push Backend
       run: |
-        docker build -t DOCKER_USERNAME/backend ./backend
-        docker push DOCKER_USERNAME/backend
+        docker build -t alaypatel212/backend ./backend
+        docker push alaypatel212/backend
 
     - name: Build & Push Frontend
       run: |
-        docker build -t DOCKER_USERNAME/frontend ./frontend
-        docker push DOCKER_USERNAME/frontend
+        docker build -t alaypatel212/frontend ./frontend
+        docker push alaypatel212/frontend
 
     - name: Deploy to AWS EC2
       uses: appleboy/ssh-action@v1.0.0
